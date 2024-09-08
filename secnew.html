@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multilingual Login System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .form-section {
+            margin-top: 20px;
+            display: none;
+        }
+
+        input[type="text"], input[type="password"] {
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Selection -->
+    <div class="container" id="language-selection">
+        <h1>Select Your Language</h1>
+        <button onclick="setLanguage('English')">English</button>
+        <button onclick="setLanguage('Hindi')">Hindi</button>
+        <button onclick="setLanguage('Bengali')">Bengali</button>
+    </div>
+
+    <!-- Login and Sign Up Page -->
+    <div class="container" id="login-page" style="display: none;">
+        <h1 id="login-title">Login</h1>
+        <button onclick="showEmployeeLogin()" id="employee-login-btn">Employee Login</button>
+        <button onclick="showPassengerLogin()" id="passenger-login-btn">Passenger Login</button>
+        <p id="signup-text">Don't have an account? <a href="#" onclick="showSignup()">Sign Up</a></p>
+
+        <!-- Employee Login Form -->
+        <div id="employee-login" class="form-section">
+            <h2 id="employee-login-title">Employee Login</h2>
+            <input type="text" id="employeeId" placeholder="Enter Employee ID">
+            <button onclick="login('employee')" id="employee-login-submit">Login</button>
+        </div>
+
+        <!-- Passenger Login Form -->
+        <div id="passenger-login" class="form-section">
+            <h2 id="passenger-login-title">Passenger Login</h2>
+            <input type="text" id="phoneNumber" placeholder="Enter Phone Number">
+            <button onclick="login('passenger')" id="passenger-login-submit">Login</button>
+        </div>
+
+        <!-- Sign Up Form -->
+        <div id="signup-form" class="form-section">
+            <h2 id="signup-title">Sign Up</h2>
+            <input type="text" id="signupName" placeholder="Enter Your Name">
+            <input type="text" id="signupPhone" placeholder="Enter Your Phone Number">
+            <input type="password" id="signupPassword" placeholder="Enter Password">
+            <button onclick="signup()">Sign Up</button>
+        </div>
+    </div>
+
+    <script>
+        // Translations for English, Hindi, Bengali
+        const translations = {
+            English: {
+                login: "Login",
+                employeeLogin: "Employee Login",
+                passengerLogin: "Passenger Login",
+                enterEmployeeId: "Enter Employee ID",
+                enterPhoneNumber: "Enter Phone Number",
+                loginSuccess: "Login Successful",
+                signupText: "Don't have an account? Sign Up",
+                signupTitle: "Sign Up",
+                enterYourName: "Enter Your Name",
+                enterPhoneNumber: "Enter Your Phone Number",
+                enterPassword: "Enter Password",
+                signupSuccess: "Sign Up Successful"
+            },
+            Hindi: {
+                login: "लॉगिन",
+                employeeLogin: "कर्मचारी लॉगिन",
+                passengerLogin: "यात्री लॉगिन",
+                enterEmployeeId: "कर्मचारी आईडी दर्ज करें",
+                enterPhoneNumber: "फोन नंबर दर्ज करें",
+                loginSuccess: "सफलतापूर्वक लॉगिन",
+                signupText: "कोई खाता नहीं है? साइन अप करें",
+                signupTitle: "साइन अप",
+                enterYourName: "अपना नाम दर्ज करें",
+                enterPhoneNumber: "फोन नंबर दर्ज करें",
+                enterPassword: "पासवर्ड दर्ज करें",
+                signupSuccess: "साइन अप सफल"
+            },
+            Bengali: {
+                login: "লগইন",
+                employeeLogin: "কর্মচারী লগইন",
+                passengerLogin: "যাত্রী লগইন",
+                enterEmployeeId: "কর্মচারী আইডি লিখুন",
+                enterPhoneNumber: "ফোন নম্বর লিখুন",
+                loginSuccess: "সফলভাবে লগইন হয়েছে",
+                signupText: "কোনো অ্যাকাউন্ট নেই? সাইন আপ করুন",
+                signupTitle: "সাইন আপ",
+                enterYourName: "আপনার নাম লিখুন",
+                enterPhoneNumber: "ফোন নম্বর লিখুন",
+                enterPassword: "পাসওয়ার্ড লিখুন",
+                signupSuccess: "সাইন আপ সফল"
+            }
+        };
+
+        // Set Language and Navigate to Login Page
+        function setLanguage(language) {
+            localStorage.setItem('selectedLanguage', language);
+            document.getElementById('language-selection').style.display = 'none';
+            document.getElementById('login-page').style.display = 'block';
+            applyTranslations(language);
+        }
+
+        // Apply translations to the Login Page
+        function applyTranslations(language) {
+            const text = translations[language];
+            document.getElementById('login-title').innerText = text.login;
+            document.getElementById('employee-login-btn').innerText = text.employeeLogin;
+            document.getElementById('passenger-login-btn').innerText = text.passengerLogin;
+            document.getElementById('signup-text').innerHTML = text.signupText.replace("Sign Up", '<a href="#" onclick="showSignup()">Sign Up</a>');
+            document.getElementById('employee-login-title').innerText = text.employeeLogin;
+            document.getElementById('employeeId').placeholder = text.enterEmployeeId;
+            document.getElementById('employee-login-submit').innerText = text.login;
+            document.getElementById('passenger-login-title').innerText = text.passengerLogin;
+            document.getElementById('phoneNumber').placeholder = text.enterPhoneNumber;
+            document.getElementById('passenger-login-submit').innerText = text.login;
+            document.getElementById('signup-title').innerText = text.signupTitle;
+            document.getElementById('signupName').placeholder = text.enterYourName;
+            document.getElementById('signupPhone').placeholder = text.enterPhoneNumber;
+            document.getElementById('signupPassword').placeholder = text.enterPassword;
+        }
+
+        // Show Employee Login Form
+        function showEmployeeLogin() {
+            document.getElementById('employee-login').style.display = 'block';
+            document.getElementById('passenger-login').style.display = 'none';
+            document.getElementById('signup-form').style.display = 'none';
+        }
+
+        // Show Passenger Login Form
+        function showPassengerLogin() {
+            document.getElementById('passenger-login').style.display = 'block';
+            document.getElementById('employee-login').style.display = 'none';
+            document.getElementById('signup-form').style.display = 'none';
+        }
+
+        // Show Sign Up Form
+        function showSignup() {
+            document.getElementById('signup-form').style.display = 'block';
+            document.getElementById('employee-login').style.display = 'none';
+            document.getElementById('passenger-login').style.display = 'none';
+        }
+
+        // Handle Login Logic
+        function login(type) {
+            const language = localStorage.getItem('selectedLanguage') || 'English';
+            const text = translations[language];
+
+            if (type === 'employee') {
+                const employeeId = document.getElementById('employeeId').value;
+                if (employeeId) {
+                    alert(text.loginSuccess + " as " + text.employeeLogin);
+                } else {
+                    alert(text.enterEmployeeId);
+                }
+            } else if (type === 'passenger') {
+                const phoneNumber = document.getElementById('phoneNumber').value;
+                if (phoneNumber) {
+                    alert(text.loginSuccess + " as " + text.passengerLogin);
+                } else {
+                    alert(text.enterPhoneNumber);
+                }
+            }
+        }
+
+        // Handle Sign Up Logic
+        function signup() {
+            const language = localStorage.getItem('selectedLanguage') || 'English';
+            const text = translations[language];
+
+            const name = document.getElementById('signupName').value;
+            const phone = document.getElementById('signupPhone').value;
+            const password = document.getElementById('signupPassword').value;
+
+            if (name && phone && password) {
+                alert(text.signupSuccess);
+                // Add further functionality like sending data to a server
+            } else {
+                alert("Please fill out all fields.");
+            }
+        }
+    </script>
+</body>
+</html>
