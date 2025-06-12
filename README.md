@@ -1,4 +1,5 @@
-*🌐 Multilingual Login System*
+**🌐 Multilingual Login System**
+
 🏆 SIH 2025 Project | Empowering Inclusivity through Language
 📝 Project Description
 In a land of many languages, a single interface often leaves many behind.
